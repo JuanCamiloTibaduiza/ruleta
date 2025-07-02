@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,69 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ruleta de Preguntas</title>
   <style>
-    body {
-      background: linear-gradient(to bottom, #003366, #005288);
-      color: white;
-    }
-    h1 {
-      font-size: 24px;
-      color: #FFC107;
-      margin-bottom: 10px;
-    }
-    #questionContainer {
-      background-color: #ffffff;
-      color: #000000;
-      border-left: 6px solid #005288;
-    }
-    button {
-      background-color: #FFC107;
-      border: none;
-      border-radius: 5px;
-      color: #000;
-      font-weight: bold;
-    }
-    .option:hover {
-      background-color: #FFD54F;
+    :root {
+      --avianca-red: #d52b1e;
+      --avianca-white: #ffffff;
+      --avianca-black: #000000;
+      --avianca-red-light: #ff8a80;
     }
 
+    * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
+      margin: 0;
       padding: 10px;
-      background: #f4f4f4;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      background: var(--avianca-white);
+      color: var(--avianca-black);
     }
-    #wheelCanvas {
-      width: 300px;
-      height: 300px;
+
+    h1 {
+      margin: 4px 0 10px;
+      font-size: 24px;
+      color: var(--avianca-red);
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: min(80vw, 300px);
+      height: min(80vw, 300px);
       margin: 20px auto;
     }
-    #questionContainer {
-      display: none;
-      margin-top: 20px;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    #wheelCanvas {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  display: block;
+}
+
+    .arrow {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 20px solid var(--avianca-red);
+      z-index: 10;
     }
+
     button {
       margin: 10px;
-      padding: 10px 20px;
+      padding: 10px 24px;
       font-size: 16px;
+      background: var(--avianca-red);
+      color: var(--avianca-white);
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
     }
+    button:active { transform: scale(0.97); }
+
     .option {
       display: block;
       margin: 10px;
       padding: 10px;
-      background-color: #e3e3e3;
       border-radius: 8px;
+      background: #e3e3e3;
       cursor: pointer;
+      transition: background 0.25s;
     }
+    .option:hover { background: var(--avianca-red-light); }
+
+    #questionContainer {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--avianca-white);
+      border-left: 6px solid var(--avianca-red);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,.1);
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #questionText { margin: 0 0 10px; font-weight: 600; }
   </style>
 </head>
 <body>
   <h1>Ruleta de Preguntas</h1>
-  <canvas id="wheelCanvas" width="300" height="300"></canvas>
-  <button onclick="spinWheel()">Girar</button>
+  <div class="wheel-wrapper">
+    <div class="arrow" style="top: 50%; left: 100%; transform: translateX(-8px) translateY(-50%) rotate(-90deg); width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-bottom: 30px solid var(--avianca-red);"></div>
+    <canvas id="wheelCanvas"></canvas>
+  </div>
+  <button id="spinBtn">Girar</button>
 
   <div id="questionContainer">
     <h2 id="questionText">Pregunta</h2>
@@ -77,127 +110,116 @@
 
   <script>
     const questions = [
-      {
-        question: "¿Cómo consideras que la estandarización de los procesos operacionales influye en la seguridad operacional en Avianca Cargo?",
-        options: ["A) Aumenta la eficiencia y reduce riesgos.", "B) Complica la flexibilidad operativa.", "C) No tiene impacto significativo.", "D) Solo aplica a algunas áreas."]
-      },
-      {
-        question: "¿Qué tan fácil consideras que es reportar incidentes de seguridad operacional dentro de Avianca Cargo?",
-        options: ["A) Muy fácil, el proceso es claro y accesible.", "B) Relativamente fácil, pero con algunas complicaciones.", "C) Algo difícil, falta claridad en los procedimientos.", "D) Muy difícil, el proceso no es accesible."]
-      },
-      {
-        question: "¿Cuál de las siguientes opciones describe mejor tu experiencia con los SOPs (Procedimientos Operacionales Estándar) en Avianca Cargo?",
-        options: ["A) Son claros y fáciles de seguir.", "B) Son complejos, pero aún entendibles.", "C) Necesitan mejoras para ser más claros.", "D) No estoy familiarizado con ellos."]
-      },
-      {
-        question: "¿Qué tan frecuentemente interactúas con el sistema de gestión de seguridad operacional (SMS) en Avianca Cargo?",
-        options: ["A) Diario, es parte de mis tareas diarias.", "B) Semanalmente, lo utilizo regularmente.", "C) Ocasionalmente, solo cuando es necesario.", "D) Casi nunca, no tengo acceso directo."]
-      },
-      {
-        question: "En relación con los reportes de seguridad operacional, ¿cuál es la opción que mejor describe tu experiencia?",
-        options: ["A) Los reportes son fáciles de generar y enviar.", "B) A veces es confuso cómo completar los reportes.", "C) La herramienta de reporte es difícil de usar.", "D) Nunca he generado ni enviado un reporte de seguridad."]
-      },
-      {
-        question: "¿Cómo calificarías la efectividad de la estandarización de procesos en mejorar la seguridad en las operaciones aéreas de Avianca Cargo?",
-        options: ["A) Muy efectiva, los procesos son claros y eficientes.", "B) Moderadamente efectiva, hay áreas que aún necesitan ajustes.", "C) Poco efectiva, no veo mejoras sustanciales.", "D) No efectiva, los procesos no contribuyen a la seguridad."]
-      },
-      {
-        question: "¿En qué medida crees que la cultura de seguridad operacional en Avianca Cargo está bien integrada en todas las áreas?",
-        options: ["A) Totalmente integrada, todos la practican y la respetan.", "B) Mayormente integrada, pero hay áreas que necesitan mejorar.", "C) Integrada solo en algunas áreas clave, falta más enfoque.", "D) No está bien integrada, muchas áreas no siguen las prácticas de seguridad."]
-      },
-      {
-        question: "¿Cuánto consideras que la estandarización de procesos ha ayudado a reducir los riesgos operacionales en Avianca Cargo?",
-        options: ["A) Mucho, los procesos estandarizados han minimizado los riesgos.", "B) Algo, pero aún existen algunos riesgos.", "C) Poco, no se ha notado una gran reducción de riesgos.", "D) No ha ayudado, los riesgos siguen siendo los mismos."]
-      },
-      {
-        question: "¿Qué tan accesibles son los SOPs y los documentos de seguridad para todo el personal en Avianca Cargo?",
-        options: ["A) Son muy accesibles, todos los empleados tienen acceso directo.", "B) Generalmente accesibles, pero algunos tienen dificultades para encontrarlos.", "C) Difíciles de acceder, no siempre están actualizados.", "D) No son accesibles, los documentos no están disponibles para todos."]
-      },
-      {
-        question: "¿Cómo describirías la formación y capacitación sobre seguridad operacional que recibes en Avianca Cargo?",
-        options: ["A) Muy completa, siempre tengo formación continua.", "B) Adecuada, con sesiones periódicas de capacitación.", "C) Insuficiente, no hay suficiente capacitación sobre seguridad.", "D) Ninguna capacitación, no se ofrece formación sobre seguridad."]
-      }
+      { question: "¿Cómo consideras que la estandarización de los procesos operacionales influye en la seguridad operacional en Avianca Cargo?", options: ["A) Aumenta la eficiencia y reduce riesgos.", "B) Complica la flexibilidad operativa.", "C) No tiene impacto significativo.", "D) Solo aplica a algunas áreas."]},
+      { question: "¿Qué tan fácil consideras que es reportar incidentes de seguridad operacional dentro de Avianca Cargo?", options: ["A) Muy fácil, el proceso es claro y accesible.", "B) Relativamente fácil, pero con algunas complicaciones.", "C) Algo difícil, falta claridad en los procedimientos.", "D) Muy difícil, el proceso no es accesible."]},
+      { question: "¿Cuál describe mejor tu experiencia con los SOPs en Avianca Cargo?", options: ["A) Son claros y fáciles de seguir.", "B) Son complejos, pero entendibles.", "C) Necesitan mejoras.", "D) No estoy familiarizado."]},
+      { question: "¿Qué tan frecuentemente interactúas con el SMS en Avianca Cargo?", options: ["A) Diario.", "B) Semanalmente.", "C) Ocasionalmente.", "D) Casi nunca."]},
+      { question: "En relación con los reportes de seguridad operacional, ¿cuál describe tu experiencia?", options: ["A) Fáciles de generar.", "B) A veces confusos.", "C) Difíciles de usar.", "D) Nunca he generado uno."]},
+      { question: "¿Cómo calificarías la efectividad de la estandarización de procesos en Avianca Cargo?", options: ["A) Muy efectiva.", "B) Moderadamente efectiva.", "C) Poco efectiva.", "D) No efectiva."]},
+      { question: "¿Qué tan integrada está la cultura de seguridad operacional?", options: ["A) Totalmente integrada.", "B) Mayormente integrada.", "C) Integrada solo en algunas áreas.", "D) No está bien integrada."]},
+      { question: "¿Cuánto ha ayudado la estandarización a reducir riesgos?", options: ["A) Mucho.", "B) Algo.", "C) Poco.", "D) Nada."]},
+      { question: "¿Qué tan accesibles son los SOPs y documentos de seguridad?", options: ["A) Muy accesibles.", "B) Generalmente accesibles.", "C) Difíciles de acceder.", "D) No accesibles."]},
+      { question: "¿Cómo describirías la capacitación sobre seguridad operacional?", options: ["A) Muy completa.", "B) Adecuada.", "C) Insuficiente.", "D) Ninguna."]}
     ];
+    const labels = questions.map((_, i) => `Pregunta ${i + 1}`);
 
-    const labels = [...Array(10)].map((_, i) => "Pregunta " + (i + 1));
-    let canvas = document.getElementById("wheelCanvas");
-    let ctx = canvas.getContext("2d");
-    let angle = 0;
-    let spinning = false;
+    const canvas = document.getElementById('wheelCanvas');
+    const ctx = canvas.getContext('2d');
 
-    function drawWheel() {
+    function resizeCanvas() {
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      canvas.width = w;
+      canvas.height = h;
+      drawWheel(0);
+    }
+
+    function drawWheel(rotation) {
       const radius = canvas.width / 2;
       const step = (2 * Math.PI) / labels.length;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      ctx.translate(radius, radius);
+      ctx.rotate(rotation);
+      ctx.translate(-radius, -radius);
 
       labels.forEach((label, i) => {
         ctx.beginPath();
         ctx.moveTo(radius, radius);
         ctx.arc(radius, radius, radius, step * i, step * (i + 1));
-        ctx.fillStyle = i % 2 === 0 ? "#FFC107" : "#03A9F4";
+        ctx.closePath();
+        ctx.fillStyle = i % 2 === 0 ? '#d52b1e' : '#ffffff';
         ctx.fill();
+        ctx.strokeStyle = '#000000';
         ctx.stroke();
+
         ctx.save();
         ctx.translate(radius, radius);
         ctx.rotate(step * i + step / 2);
-        ctx.textAlign = "right";
-        ctx.fillStyle = "black";
-        ctx.font = "bold 14px Arial";
-        ctx.fillText(label, radius - 10, 5);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText(label, radius - 12, 5);
         ctx.restore();
       });
+
+      ctx.restore();
+    }
+
+    let angle = 0;
+    let spinning = false;
+
+    function easeOut(t) {
+      return (--t) * t * t + 1;
     }
 
     function spinWheel() {
       if (spinning) return;
       spinning = true;
-      let spins = Math.floor(Math.random() * 5 + 5) * 360;
-      let targetAngle = Math.random() * 360;
-      let total = spins + targetAngle;
 
-      let duration = 4000;
+      const spins = (Math.floor(Math.random() * 5) + 5) * 360;
+      const targetAngle = Math.random() * 360;
+      const totalRotation = spins + targetAngle;
+      const duration = 4000;
       let start = null;
 
-      function animate(timestamp) {
-        if (!start) start = timestamp;
-        let progress = timestamp - start;
-        let current = easeOut(progress / duration) * total;
-        angle = current % 360;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate((angle * Math.PI) / 180);
-        ctx.translate(-canvas.width / 2, -canvas.height / 2);
-        drawWheel();
-        ctx.restore();
+      function animate(ts) {
+        if (!start) start = ts;
+        const progress = ts - start;
+        const eased = easeOut(Math.min(progress / duration, 1));
+        angle = eased * totalRotation;
+
+        drawWheel((angle * Math.PI) / 180);
 
         if (progress < duration) {
           requestAnimationFrame(animate);
         } else {
           spinning = false;
-          showQuestion(Math.floor((360 - angle) / (360 / labels.length)) % labels.length);
+          const finalAngle = angle % 360;
+          const index = Math.floor((360 - finalAngle) / (360 / labels.length)) % labels.length;
+          showQuestion(index);
         }
       }
 
       requestAnimationFrame(animate);
     }
 
-    function easeOut(t) {
-      return (--t) * t * t + 1;
-    }
-
     function showQuestion(index) {
       const q = questions[index];
-      document.getElementById("questionText").textContent = q.question;
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-      q.options.forEach(option => {
-        const btn = document.createElement("div");
-        btn.className = "option";
-        btn.textContent = option;
-        btn.onclick = () => submitResponse(index + 1, option);
-        optionsDiv.appendChild(btn);
+      document.getElementById('questionText').textContent = q.question;
+      const optDiv = document.getElementById('options');
+      optDiv.innerHTML = '';
+      q.options.forEach(opt => {
+        const d = document.createElement('div');
+        d.className = 'option';
+        d.textContent = opt;
+        d.onclick = () => submitResponse(index + 1, opt);
+        optDiv.appendChild(d);
       });
-      document.getElementById("questionContainer").style.display = "block";
+      document.getElementById('questionContainer').style.display = 'block';
+      document.getElementById('questionContainer').scrollIntoView({ behavior: 'smooth' });
     }
 
     function submitResponse(questionNum, option) {
@@ -205,17 +227,16 @@
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pregunta: "Pregunta " + questionNum,
-          opcion: option
-        })
+        body: JSON.stringify({ pregunta: `Pregunta ${questionNum}`, opcion: option })
       }).then(() => {
         alert("Respuesta registrada. ¡Gracias!");
         document.getElementById("questionContainer").style.display = "none";
       });
     }
 
-    drawWheel();
+    document.getElementById('spinBtn').addEventListener('click', spinWheel);
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
   </script>
 </body>
 </html>
