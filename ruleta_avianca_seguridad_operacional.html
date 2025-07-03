@@ -110,17 +110,97 @@
 
   <script>
     const questions = [
-      { question: "¿Cómo consideras que la estandarización de los procesos operacionales influye en la seguridad operacional en Avianca Cargo?", options: ["A) Aumenta la eficiencia y reduce riesgos.", "B) Complica la flexibilidad operativa.", "C) No tiene impacto significativo.", "D) Solo aplica a algunas áreas."]},
-      { question: "¿Qué tan fácil consideras que es reportar incidentes de seguridad operacional dentro de Avianca Cargo?", options: ["A) Muy fácil, el proceso es claro y accesible.", "B) Relativamente fácil, pero con algunas complicaciones.", "C) Algo difícil, falta claridad en los procedimientos.", "D) Muy difícil, el proceso no es accesible."]},
-      { question: "¿Cuál describe mejor tu experiencia con los SOPs en Avianca Cargo?", options: ["A) Son claros y fáciles de seguir.", "B) Son complejos, pero entendibles.", "C) Necesitan mejoras.", "D) No estoy familiarizado."]},
-      { question: "¿Qué tan frecuentemente interactúas con el SMS en Avianca Cargo?", options: ["A) Diario.", "B) Semanalmente.", "C) Ocasionalmente.", "D) Casi nunca."]},
-      { question: "En relación con los reportes de seguridad operacional, ¿cuál describe tu experiencia?", options: ["A) Fáciles de generar.", "B) A veces confusos.", "C) Difíciles de usar.", "D) Nunca he generado uno."]},
-      { question: "¿Cómo calificarías la efectividad de la estandarización de procesos en Avianca Cargo?", options: ["A) Muy efectiva.", "B) Moderadamente efectiva.", "C) Poco efectiva.", "D) No efectiva."]},
-      { question: "¿Qué tan integrada está la cultura de seguridad operacional?", options: ["A) Totalmente integrada.", "B) Mayormente integrada.", "C) Integrada solo en algunas áreas.", "D) No está bien integrada."]},
-      { question: "¿Cuánto ha ayudado la estandarización a reducir riesgos?", options: ["A) Mucho.", "B) Algo.", "C) Poco.", "D) Nada."]},
-      { question: "¿Qué tan accesibles son los SOPs y documentos de seguridad?", options: ["A) Muy accesibles.", "B) Generalmente accesibles.", "C) Difíciles de acceder.", "D) No accesibles."]},
-      { question: "¿Cómo describirías la capacitación sobre seguridad operacional?", options: ["A) Muy completa.", "B) Adecuada.", "C) Insuficiente.", "D) Ninguna."]}
-    ];
+  {
+    question: "¿Cómo consideras que la estandarización de los procesos operacionales influye en la seguridad operacional en Avianca Cargo?",
+    options: [
+      "A) Aumenta la eficiencia y reduce riesgos.",
+      "B) Complica la flexibilidad operativa.",
+      "C) No tiene impacto significativo.",
+      "D) Solo aplica a algunas áreas."
+    ]
+  },
+  {
+    question: "¿Qué tan fácil consideras que es reportar incidentes de seguridad operacional dentro de Avianca Cargo?",
+    options: [
+      "A) Muy fácil, el proceso es claro y accesible.",
+      "B) Relativamente fácil, pero con algunas complicaciones.",
+      "C) Algo difícil, falta claridad en los procedimientos.",
+      "D) Muy difícil, el proceso no es accesible."
+    ]
+  },
+  {
+    question: "¿Cuál de las siguientes opciones describe mejor tu experiencia con los SOPs (Procedimientos Operacionales Estándar) en Avianca Cargo?",
+    options: [
+      "A) Son claros y fáciles de seguir.",
+      "B) Son complejos, pero aún entendibles.",
+      "C) Necesitan mejoras para ser más claros.",
+      "D) No estoy familiarizado con ellos."
+    ]
+  },
+  {
+    question: "¿Qué tan frecuentemente interactúas con el sistema de gestión de seguridad operacional (SMS) en Avianca Cargo?",
+    options: [
+      "A) Diario, es parte de mis tareas diarias.",
+      "B) Semanalmente, lo utilizo regularmente.",
+      "C) Ocasionalmente, solo cuando es necesario.",
+      "D) Casi nunca, no tengo acceso directo."
+    ]
+  },
+  {
+    question: "En relación con los reportes de seguridad operacional, ¿cuál es la opción que mejor describe tu experiencia?",
+    options: [
+      "A) Los reportes son fáciles de generar y enviar.",
+      "B) A veces es confuso cómo completar los reportes.",
+      "C) La herramienta de reporte es difícil de usar.",
+      "D) Nunca he generado ni enviado un reporte de seguridad."
+    ]
+  },
+  {
+    question: "¿Cómo calificarías la efectividad de la estandarización de procesos en mejorar la seguridad en las operaciones aéreas de Avianca Cargo?",
+    options: [
+      "A) Muy efectiva, los procesos son claros y eficientes.",
+      "B) Moderadamente efectiva, hay áreas que aún necesitan ajustes.",
+      "C) Poco efectiva, no veo mejoras sustanciales.",
+      "D) No efectiva, los procesos no contribuyen a la seguridad."
+    ]
+  },
+  {
+    question: "¿En qué medida crees que la cultura de seguridad operacional en Avianca Cargo está bien integrada en todas las áreas?",
+    options: [
+      "A) Totalmente integrada, todos la practican y la respetan.",
+      "B) Mayormente integrada, pero hay áreas que necesitan mejorar.",
+      "C) Integrada solo en algunas áreas clave, falta más enfoque.",
+      "D) No está bien integrada, muchas áreas no siguen las prácticas de seguridad."
+    ]
+  },
+  {
+    question: "¿Cuánto consideras que la estandarización de procesos ha ayudado a reducir los riesgos operacionales en Avianca Cargo?",
+    options: [
+      "A) Mucho, los procesos estandarizados han minimizado los riesgos.",
+      "B) Algo, pero aún existen algunos riesgos.",
+      "C) Poco, no se ha notado una gran reducción de riesgos.",
+      "D) No ha ayudado, los riesgos siguen siendo los mismos."
+    ]
+  },
+  {
+    question: "¿Qué tan accesibles son los SOPs y los documentos de seguridad para todo el personal en Avianca Cargo?",
+    options: [
+      "A) Son muy accesibles, todos los empleados tienen acceso directo.",
+      "B) Generalmente accesibles, pero algunos tienen dificultades para encontrarlos.",
+      "C) Difíciles de acceder, no siempre están actualizados.",
+      "D) No son accesibles, los documentos no están disponibles para todos."
+    ]
+  },
+  {
+    question: "¿Cómo describirías la formación y capacitación sobre seguridad operacional que recibes en Avianca Cargo?",
+    options: [
+      "A) Muy completa, siempre tengo formación continua.",
+      "B) Adecuada, con sesiones periódicas de capacitación.",
+      "C) Insuficiente, no hay suficiente capacitación sobre seguridad.",
+      "D) Ninguna capacitación, no se ofrece formación sobre seguridad."
+    ]
+  }
+];
     const labels = questions.map((_, i) => `Pregunta ${i + 1}`);
 
     const canvas = document.getElementById('wheelCanvas');
